@@ -81,7 +81,6 @@ def LoadAllCategories(folderPath, useRawData):
     categoryFolders = [x for x in categoryFolders if os.path.isdir(x)]
 
     numCategories = len(categoryFolders)
-    print(categoryFolders)
     category = 0
     for categoryPath in categoryFolders:
         inputs = LoadCategory(categoryPath, useRawData)
