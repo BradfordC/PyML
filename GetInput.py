@@ -1,5 +1,6 @@
 from PIL import Image
 import os
+import time
 
 def GetInput(image):
     imageData = image.load()
@@ -97,3 +98,12 @@ def LoadAllCategories(folderPath, useRawData):
 
 def ScaleTo(image, width, height):
     return image.resize((width, height), Image.ANTIALIAS)
+
+def SampleUse():
+    start = time.clock()
+    data = LoadAllCategories("D:\\Chris\\Pictures\\Wallpaper", True)
+    end = time.clock()
+    print(end - start)
+    print(len(data))
+
+SampleUse()
