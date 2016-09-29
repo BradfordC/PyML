@@ -13,6 +13,7 @@ def GetInput(image):
             inputArray.append(pixel[1])#G
             inputArray.append(pixel[2])#B
 
+    inputArray = Normalize(inputArray)
     return inputArray
 
 def GetLocalizedInput(image):
@@ -57,6 +58,7 @@ def GetLocalizedInput(image):
         inputArray.append(averageG)
         inputArray.append(averageB)
 
+    inputArray = Normalize(inputArray)
     return inputArray
 
 def LoadCategory(categoryFolderPath, useRawData):
@@ -95,6 +97,9 @@ def LoadAllCategories(folderPath, useRawData):
         category += 1
         
     return data
+
+def Normalize(input):
+    return [x/255 for x in input]
 
 def ScaleTo(image, width, height):
     return image.resize((width, height), Image.ANTIALIAS)
