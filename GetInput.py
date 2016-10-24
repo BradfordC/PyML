@@ -66,6 +66,8 @@ def LoadCategory(categoryFolderPath, useRawData):
     #Assuming all files in folder are images
     for imageName in sorted(os.listdir(categoryFolderPath)):
         imagePath = os.path.join(categoryFolderPath, imageName)
+        if(os.path.isdir(imagePath)):
+            continue
         image = Image.open(imagePath)
         #image = ScaleTo(image, 20, 20)
         if(useRawData):
