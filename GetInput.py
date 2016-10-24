@@ -103,12 +103,3 @@ def Normalize(input):
 
 def ScaleTo(image, width, height):
     return image.resize((width, height), Image.ANTIALIAS)
-
-def SampleUse():
-    start = time.clock()
-    data = LoadAllCategories("D:\\Chris\\Pictures\\Wallpaper", True)
-    end = time.clock()
-    print(end - start)
-    print(len(data))
-
-SampleUse()
