@@ -30,8 +30,14 @@ class OutputLayer:
 
         if self.ErrorFunction == "MSE":
             errorSum = 0
-            for i in range(0, self.Values.size):
-                errorSum += math.pow(self.Values[i] - expected[i], 2)
-            mse = errorSum / self.Values.size
+            for i in range(0, self.Activations.size):
+                error = math.pow(self.Activations[i] - expected[i], 2)
+                errorSum += error
+            mse = errorSum / self.Activations.size
             return mse
 
+    def GetDeltas(self, expected):
+        deltas = np.zeros(self.Size)
+        for i in range(0, self.Size):
+            deltas[i] = expected[i] - self.Activations[i]
+        return deltas

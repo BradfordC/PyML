@@ -1,5 +1,6 @@
 import Layer
 import OutputLayer
+import numpy as np
 
 class Network:
     def __init__(self, inputSize, outputSize, hiddenLayerSizes, activationFunction="Sigmoid"):
@@ -26,3 +27,10 @@ class Network:
 
     def GetError(self, expected):
         return self.OutputLayer.GetError(expected)
+
+    def Backprop(self, expected, learningRate):
+        nextLayerDeltas = self.OutputLayer.GetDeltas(expected)
+        for layer in reversed(self.Layers):
+            gradient = np.dot(nextLayerDeltas.reshape(nextLayerDeltas.size, 1), layer.Activations.reshape(1,layer.Activations.size))
+            layer.Weights = np.add(layer.Weights, np.multiply(gradient,learningRate))
+            nextLayerDeltas = layer.MakeDeltas(nextLayerDeltas)
