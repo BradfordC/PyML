@@ -23,3 +23,6 @@ class Network:
             nextLayerInput = layer.Feedforward(nextLayerInput)
         self.OutputLayer.Activate(nextLayerInput)
         return self.OutputLayer.GetOutput()
+
+    def GetError(self, expected):
+        return self.OutputLayer.GetError(expected)

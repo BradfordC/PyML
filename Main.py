@@ -6,4 +6,4 @@ import numpy as np
 
 net = Network.Network(3, 5, [3,4,5])
 output = net.Feedforwad(np.array([2,3,4]))
-print(output)
+print(net.GetError(np.array([1, 1, 1, 1, 1])))
