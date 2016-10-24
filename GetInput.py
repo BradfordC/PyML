@@ -63,13 +63,15 @@ def GetLocalizedInput(image):
 
 def LoadCategory(categoryFolderPath, useRawData):
     inputs = []
-    #Assuming all files in folder & subfolder are images
     for imageName in sorted(os.listdir(categoryFolderPath)):
         imagePath = os.path.join(categoryFolderPath, imageName)
         if(os.path.isdir(imagePath)):
             inputs.append(LoadCategory(imagePath, useRawData))
             continue
-        image = Image.open(imagePath)
+        try:
+            image = Image.open(imagePath)
+        except IOError:
+            continue
         image = ScaleTo(image, 20, 20)
         if(useRawData):
             inputs.append(GetInput(image))
