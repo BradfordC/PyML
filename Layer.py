@@ -15,7 +15,7 @@ class Layer:
     def RandomizeWeights(self):
         for row in range(0, self.Weights.shape[0]):
             for column in range(0, self.Weights.shape[1]):
-                self.Weights[row,column] = np.random.normal(0, 1)
+                self.Weights[row,column] = np.random.normal(0, .01)
 
     #def GetWeightsWithoutBias(self):
 
