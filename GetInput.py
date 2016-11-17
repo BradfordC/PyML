@@ -1,6 +1,5 @@
 from PIL import Image
 import os
-import time
 
 def GetInput(image):
     imageData = image.load()
@@ -65,12 +64,16 @@ def LoadCategory(categoryFolderPath, useRawData):
     inputs = []
     for imageName in sorted(os.listdir(categoryFolderPath)):
         imagePath = os.path.join(categoryFolderPath, imageName)
+        #If the path is actually another folder, search it for images as well
         if(os.path.isdir(imagePath)):
-            inputs.append(LoadCategory(imagePath, useRawData))
+            print(imagePath)
+            inputs.extend(LoadCategory(imagePath, useRawData))
             continue
+        #Try to load an image
         try:
             image = Image.open(imagePath)
         except IOError:
+            #Ignore it if it's not an image
             continue
         image = ScaleTo(image, 20, 20)
         if(useRawData):
