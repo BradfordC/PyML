@@ -19,7 +19,10 @@ class OutputLayer:
 
         #Sigmoid
         for i in range(0, self.Values.size):
-            self.Activations[i] = Functions.Sigmoid(self.Values[i])
+            #Hack
+            #Using max to prevent overflow error
+            value = max(self.Values[i], -700)
+            self.Activations[i] = Functions.Sigmoid(value)
 
     def GetOutput(self):
         return self.Activations.copy()
