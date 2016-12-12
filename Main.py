@@ -17,8 +17,8 @@ def GetAccuracy(set, network):
     return correctCount / len(set)
 
 
-# data = GetInput.LoadAllCategories("D:/Chris/Documents/School/Machine Learning/Project/4Categories", True)
-data = GetInput.LoadAllCategories("D:/Chris/Documents/School/Machine Learning/Project/SmallSet", True)
+data = GetInput.LoadAllCategories("D:/Chris/Documents/School/Machine Learning/Project/4Categories", True)
+# data = GetInput.LoadAllCategories("D:/Chris/Documents/School/Machine Learning/Project/SmallSet", True)
 random.shuffle(data)
 
 firstValidIndex = int(len(data) * .7)
@@ -38,7 +38,7 @@ correct = 0
 
 maxAcc = 0
 
-for i in range(5):
+for i in range(100):
     for image in trainingSet:
         input = np.array(image[0])
         expected = np.array(image[1])
