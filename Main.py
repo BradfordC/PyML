@@ -2,6 +2,7 @@ import GetInput
 import Network
 import numpy as np
 import time
+from random import randint
 import math
 
 #data = GetInput.LoadAllCategories("C:\\Users\\Chris\\Dropbox\\MLProjectResources\\4Categories", True)
@@ -28,7 +29,7 @@ testFile = open("C:\\Users\\Chris\\Dropbox\\School\\Machine Learning\\Project\\C
 validFile = open("C:\\Users\\Chris\\Dropbox\\School\\Machine Learning\\Project\\Checkpoint 5\\ValidAccuracy.csv", 'w')
 
 start = time.time()
-for i in range(1):
+for i in range(100):
     #Train one epoch on training set
     for image in trainingSet:
         input = np.array(image[0])
@@ -38,7 +39,7 @@ for i in range(1):
         net.Backprop(expected, .0001)
 
         testImageCount += 1
-        if np.argmax(expected) == np.argmax(output):
+        if np.argmax(expected) == randint(0,3):
             testImageCorrect += 1
 
         if testImageCount == groupSize:
@@ -60,7 +61,6 @@ for i in range(1):
             validImageCorrect +=1
     validationAccuracy = validImageCorrect / len(validationSet)
     validFile.write(str(time.time() - start) + ',' + str(validationAccuracy) + '\n')
-
 
 end = time.time()
 print(str(end - start) + ' seconds.')
