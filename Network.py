@@ -3,7 +3,7 @@ import OutputLayer
 import numpy as np
 
 class Network:
-    def __init__(self, inputSize, outputSize, hiddenLayerSizes, activationFunction="Sigmoid"):
+    def __init__(self, inputSize, outputSize, hiddenLayerSizes, useDropout=False, activationFunction="Sigmoid"):
         self.Layers = []
 
         layerSizes = [inputSize]
@@ -11,10 +11,11 @@ class Network:
         layerSizes.append(outputSize)
 
         for i in range(0, len(layerSizes) - 1):
-            newLayer = Layer.Layer(layerSizes[i], layerSizes[i+1], activationFunction)
+            newLayer = Layer.Layer(layerSizes[i], layerSizes[i+1], .5 if useDropout else 0, activationFunction)
             newLayer.RandomizeWeights()
             self.Layers.append(newLayer)
         self.Layers[0].Mode = "Linear"
+        self.Layers[0].DropoutRate = .2 if useDropout else 0
 
         self.OutputLayer = OutputLayer.OutputLayer(outputSize)
 

@@ -17,8 +17,8 @@ def GetAccuracy(set, network):
     return correctCount / len(set)
 
 
-data = GetInput.LoadAllCategories("D:/Chris/Documents/School/Machine Learning/Project/4Categories", True)
-# data = GetInput.LoadAllCategories("D:/Chris/Documents/School/Machine Learning/Project/SmallSet", True)
+#data = GetInput.LoadAllCategories("D:/Chris/Documents/School/Machine Learning/Project/4Categories", True)
+data = GetInput.LoadAllCategories("D:/Chris/Documents/School/Machine Learning/Project/SmallSet", True)
 random.shuffle(data)
 
 firstValidIndex = int(len(data) * .7)
@@ -28,44 +28,45 @@ trainingSet = data[:firstValidIndex]
 validationSet = data[firstValidIndex:firstTestIndex]
 testingSet = data[firstTestIndex:]
 
-net = Network.Network(len(data[0][0]), len(data[0][1]), [200])
+numRuns = 50
+accuracySum = 0
 
-groupCount = 0
-groupSize = 250
+for run in range(numRuns):
+    net = Network.Network(len(data[0][0]), len(data[0][1]), [200], useDropout=False)
 
-count = 0
-correct = 0
+    groupCount = 0
+    groupSize = 500
 
-maxAcc = 0
+    count = 0
+    correct = 0
 
-for i in range(100):
-    for image in trainingSet:
-        input = np.array(image[0])
-        expected = np.array(image[1])
-        output = net.Feedforwad(input)
-        error = net.GetError(expected)
-        net.Backprop(expected, .01)
+    runAcc = 0
 
-        category = np.argmax(expected)
-        classify = np.argmax(output)
+    for i in range(10):
+        for image in trainingSet:
+            input = np.array(image[0])
+            expected = np.array(image[1])
+            output = net.Feedforwad(input)
+            error = net.GetError(expected)
+            net.Backprop(expected, .01)
 
-        if category == classify:
-            correct += 1
-        count += 1
+            category = np.argmax(expected)
+            classify = np.argmax(output)
 
-        if count == groupSize:
-            print(groupCount, end= "\t")
-            print(correct / count, end='\t')
+            if category == classify:
+                correct += 1
+            count += 1
 
-            validAccuracy = GetAccuracy(validationSet, net)
-            print(validAccuracy)
-            if validAccuracy > maxAcc:
-                maxAcc = validAccuracy
+            if count == groupSize:
+                print(groupCount, end= "\t")
+                print(correct / count, end='\t')
 
-            groupCount += 1
-            correct = 0
-            count = 0
+                groupCount += 1
+                correct = 0
+                count = 0
 
-print(maxAcc)
+    accuracySum += GetAccuracy(validationSet,net)
+
+print(accuracySum / numRuns)
 
 

@@ -1,8 +1,9 @@
 import numpy as np
+import random
 import Functions
 
 class Layer:
-    def __init__(self, size, nextLayerSize, activationMode="Sigmoid"):
+    def __init__(self, size, nextLayerSize, dropoutRate=0, activationMode="Sigmoid"):
         self.Size = size
         self.NodeCount = size + 1
 
@@ -10,12 +11,16 @@ class Layer:
         self.Activations = np.zeros(self.NodeCount)
         self.Weights = np.zeros(shape=(nextLayerSize, self.NodeCount))
 
+        self.DropoutRate = dropoutRate
+
         self.Mode = activationMode
 
     def RandomizeWeights(self):
         for row in range(0, self.Weights.shape[0]):
             for column in range(0, self.Weights.shape[1]):
                 self.Weights[row,column] = np.random.normal(0, .01)
+
+
 
     #def GetWeightsWithoutBias(self):
 
@@ -65,6 +70,12 @@ class Layer:
         if self.Mode == "ReLU":
             for i in range(0, self.Values.size):
                 self.Activations[i] = max(self.Values[i], 0)
+
+        if(self.DropoutRate > 0):
+            for i in range(self.Activations.size):
+                if(random.random() < self.DropoutRate):
+                    self.Activations[i] = 0
+                    numDropout += 1
 
         # Bias node
         self.Activations[-1] = 1
