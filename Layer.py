@@ -75,7 +75,6 @@ class Layer:
             for i in range(self.Activations.size):
                 if(random.random() < self.DropoutRate):
                     self.Activations[i] = 0
-                    numDropout += 1
 
         # Bias node
         self.Activations[-1] = 1
