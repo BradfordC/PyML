@@ -1,5 +1,6 @@
 from PIL import Image
 import os
+import colorsys
 
 def GetInput(image):
     imageData = image.load()
@@ -60,14 +61,43 @@ def GetLocalizedInput(image):
     inputArray = Normalize(inputArray)
     return inputArray
 
-def LoadCategory(categoryFolderPath, useRawData):
+def GetHistograms(image):
+    imageData = image.load()
+
+    firstHistogram = image.histogram()
+
+    inputArray = []
+    for y in range(0, image.height):
+        for x in range(0, image.width):
+            pixel = imageData[x,y]
+            hsv = colorsys.rgb_to_hsv(pixel[0],pixel[1],pixel[2])
+            hsv = (int(hsv[0]),int(hsv[1]),int(hsv[2]))
+
+            image.putpixel((x,y), hsv)
+
+    histogram = image.histogram()
+    smallHistogram = []
+
+    reductionFactor = 8
+
+    for i in range(int(len(histogram) / reductionFactor)):
+        sum = 0
+        for j in range(reductionFactor):
+            sum += histogram[i * reductionFactor + j]
+        smallHistogram.append(sum)
+
+
+    return firstHistogram
+
+
+def LoadCategory(categoryFolderPath, mode):
     inputs = []
     for imageName in sorted(os.listdir(categoryFolderPath)):
         imagePath = os.path.join(categoryFolderPath, imageName)
         #If the path is actually another folder, search it for images as well
         if(os.path.isdir(imagePath)):
             print(imagePath)
-            inputs.extend(LoadCategory(imagePath, useRawData))
+            inputs.extend(LoadCategory(imagePath, mode))
             continue
         #Try to load an image
         try:
@@ -76,13 +106,17 @@ def LoadCategory(categoryFolderPath, useRawData):
             #Ignore it if it's not an image
             continue
         image = ScaleTo(image, 20, 20)
-        if(useRawData):
+        if(mode == 'Full'):
             inputs.append(GetInput(image))
-        else:
+        elif(mode == 'Fast'):
             inputs.append(GetLocalizedInput(image))
+        elif(mode == 'Hist'):
+            inputs.append(GetHistograms(image))
+        else:
+            print('Error')
     return inputs
 
-def LoadAllCategories(folderPath, useRawData):
+def LoadAllCategories(folderPath, mode):
     #Each data point is a pair of input and output
     data = []
 
@@ -94,7 +128,7 @@ def LoadAllCategories(folderPath, useRawData):
     numCategories = len(categoryFolders)
     category = 0
     for categoryPath in categoryFolders:
-        inputs = LoadCategory(categoryPath, useRawData)
+        inputs = LoadCategory(categoryPath, mode)
         output = [0] * numCategories
         output[category] = 1
 
