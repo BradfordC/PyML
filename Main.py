@@ -1,5 +1,10 @@
 import Network
+import Agent
+import LineProblem
+import Population
 
-net = Network.Network(5, 5, [5, 6, 7])
-print(net.GetLayerSizes())
-print(net.GetLayerSizes()[1:-1])
+problem = LineProblem.LineProblem(.1, .01)
+baseNet = Network.Network(LineProblem.Inputs, LineProblem.Outputs, [3])
+agent = Agent.Agent(baseNet)
+
+print(problem.GetFitness(agent, 100, .1))
