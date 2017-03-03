@@ -35,3 +35,10 @@ class Network:
             gradient = np.dot(nextLayerDeltas.reshape(nextLayerDeltas.size, 1), layer.Activations.reshape(1,layer.Activations.size))
             layer.Weights = np.add(layer.Weights, np.multiply(gradient,learningRate))
             nextLayerDeltas = layer.MakeDeltas(nextLayerDeltas)
+
+    def GetLayerSizes(self):
+        sizes = []
+        for Layer in self.Layers:
+            sizes.append(Layer.Size)
+        sizes.append(self.OutputLayer.Size)
+        return sizes
