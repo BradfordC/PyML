@@ -20,6 +20,8 @@ class Network:
         self.OutputLayer = OutputLayer.OutputLayer(outputSize)
 
     def Feedforwad(self, input):
+        if(type(input) is list):
+            input = np.array(input)
         nextLayerInput = input.copy()
         for layer in self.Layers:
             nextLayerInput = layer.Feedforward(nextLayerInput)
